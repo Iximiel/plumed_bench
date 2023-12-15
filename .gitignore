@@ -1,3 +1,9 @@
 *.o
 plumedProfiler
 perf.*
+*.svg
+*.folded
+*.perf
+palette.map
+.vscode
+*.zip
