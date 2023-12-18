@@ -1,9 +1,16 @@
+#
+.vscode
+#
 *.o
 plumedProfiler
+# output
 perf.*
 *.svg
 *.folded
 *.perf
 palette.map
-.vscode
 *.zip
+*.out
+benches
+#some comments to chec the worl
+notes.txt

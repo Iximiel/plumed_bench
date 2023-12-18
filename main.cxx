@@ -15,6 +15,8 @@ ORIGINAL https://gist.github.com/GiovanniBussi/8a44ba30a8d66f8566caa121e9f652d0
 
 #include "plumed/wrapper/Plumed.h"
 #include <chrono>
+#include <fstream>
+#include <iomanip>
 #include <iostream>
 #include <vector>
 
@@ -64,11 +66,17 @@ void test(const std::string &path) {
   }
 
   auto end = std::chrono::high_resolution_clock::now();
-  auto duration =
-      std::chrono::duration_cast<std::chrono::microseconds>(end - beg);
-  std::cout << "Elapsed Time: " << duration.count() << "\n";
+  {
+    auto duration =
+        std::chrono::duration_cast<std::chrono::microseconds>(end - beg);
+    std::ofstream f("benches", std::ios::app);
+    const auto now = std::chrono::system_clock::now();
+    const std::time_t t_c = std::chrono::system_clock::to_time_t(now);
+    f << std::ctime(&t_c);
+    f << std::left << std::setw(80) << path;
+    f << " Elapsed Time: " << duration.count() << "\n";
+  }
 }
-
 int main(int argc, const char *argv[]) {
   test(argv[1]);
   return 0;
