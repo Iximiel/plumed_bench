@@ -5,6 +5,8 @@
 plumedProfiler
 # output
 perf.*
+*.data
+*.old
 *.svg
 *.folded
 *.perf
