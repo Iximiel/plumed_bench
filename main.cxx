@@ -28,11 +28,14 @@ void test(const std::string &path) {
   p.cmd("setNatoms", natoms);
   p.cmd("init");
 
-  p.cmd("readInputLines", "c0: CENTER ATOMS=1-1000\n"
-                          "c1: CENTER ATOMS=1-100000\n"
-                          "all: CENTER ATOMS=c0,c1\n"
-                          "pos: POSITION ATOM=all\n"
-                          "RESTRAINT ARG=pos.x AT=0.0 KAPPA=1\n");
+  p.cmd("readInputLines",
+        R"(DEBUG DETAILED_TIMERS
+c0: CENTER ATOMS=1-1000 NOPBC
+c1: CENTER ATOMS=1-100000 NOPBC
+all: CENTER ATOMS=c0,c1
+pos: POSITION ATOM=all
+RESTRAINT ARG=pos.x AT=0.0 KAPPA=1
+)");
 
   std::vector<double> posit(3 * natoms, 0.0);
   std::vector<double> force(3 * natoms, 0.0);

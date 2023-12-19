@@ -7,8 +7,8 @@ colors=
 flameDir=$HOME/scratch/repos/FlameGraph
 
 #18_12 has an extra stopwatch
-dirtype=plumed18_12
-Extra="NoPbc-stopwatch"
+dirtype=plumed19_12
+Extra="NoPbc-stopwatch-swcenter-more"
 # colors="--colors io"
 for name in master htt; do
   fname=${name}${dirtype}${Extra}
@@ -24,7 +24,10 @@ for name in master htt; do
   "${flameDir}"/stackcollapse-perf.pl "${fname}.perf" >"${fname}.folded"
   "${flameDir}"/flamegraph.pl "${fname}.folded" --cp ${colors} --subtitle ${fname} >"${fname}.svg"
   "${flameDir}"/flamegraph.pl "${fname}.folded" --cp ${colors} --subtitle ${fname} --flamechart >"${fname}.flamechart.svg"
-  colors="--colors chain"
+  colors="--colors mem"
+  #colors="--colors chain"
 done
 "${flameDir}"/difffolded.pl master${dirtype}${Extra}.folded htt${dirtype}${Extra}.folded |
-  "${flameDir}"/flamegraph.pl --subtitle "diff master-htt ${dirtype}${Extra}" >diff${dirtype}${Extra}.svg
+  "${flameDir}"/flamegraph.pl --subtitle "diff master-htt ${dirtype}${Extra}" >diff_master-htt_${dirtype}${Extra}.svg
+"${flameDir}"/difffolded.pl htt${dirtype}${Extra}.folded master${dirtype}${Extra}.folded |
+  "${flameDir}"/flamegraph.pl --negate --subtitle "diff htt-master ${dirtype}${Extra}" >diff_htt-master_${dirtype}${Extra}.svg
