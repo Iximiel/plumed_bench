@@ -9,18 +9,17 @@ flameDir=$HOME/scratch/repos/FlameGraph
 #18_12 has an extra stopwatch
 # dirtype=plumed-Stopwatch
 # Extra="NoPbc-base-perf"
-dirtype=plumed-24
 Extra=""
-colors="--colors mem"
+colors=""
 
-for name in htt; do
-  fname=${name}${dirtype}${Extra}
-  echo "perfing \"./plumedProfiler \$HOME/scratch/installs/${name}${dirtype}/lib/libplumedKernel.so\""
+for dirplace in masterplumed-11-01-24 httplumed15_12_framepointer httplumed-24git; do
+  fname=${dirplace}${Extra}
+  echo "perfing \"./plumedProfiler \$HOME/scratch/installs/${dirplace}/lib/libplumedKernel.so\""
   # -g Enables call-graph (stack chain/backtrace) recording for both kernel space and user space.
   # -o, --output= Output file name.
   # -F, --freq= Profile at this frequency. Use max to use the currently maximum allowed frequency, i.e. the value in the kernel.perf_event_max_sample_rate sysctl. Will throttle down to the currently maximum allowed frequency. See --strict-freq.
   perf record -F99 -g --output="${fname}.data" \
-    ./plumedProfiler $HOME/scratch/installs/${name}${dirtype}/lib/libplumedKernel.so >"${fname}.out"
+    ../plumedProfiler $HOME/scratch/installs/${dirplace}/lib/libplumedKernel.so >"${fname}.out"
   # -i, --input= Input file name. (default: perf.data unless stdin is a fifo)
   perf script --input="${fname}.data" >"${fname}.perf"
 
