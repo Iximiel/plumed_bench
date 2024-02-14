@@ -20,8 +20,9 @@ ORIGINAL https://gist.github.com/GiovanniBussi/8a44ba30a8d66f8566caa121e9f652d0
 #include <iostream>
 #include <vector>
 
-//steady clock is guaranteed to be monotonic and it is the best choice for performance intervals
-using perfclock=std::chrono::steady_clock;
+// steady clock is guaranteed to be monotonic and it is the best choice for
+// performance intervals
+using perfclock = std::chrono::steady_clock;
 
 void test(const std::string &path) {
   int natoms = 100000;
@@ -32,9 +33,8 @@ void test(const std::string &path) {
   p.cmd("init");
 
   p.cmd("readInputLines",
-        R"(DEBUG DETAILED_TIMERS
-c0: CENTER ATOMS=1-1000 NOPBC
-c1: CENTER ATOMS=1-100000 NOPBC
+        R"(c0: CENTER ATOMS=1-1000
+c1: CENTER ATOMS=1-100000
 all: CENTER ATOMS=c0,c1
 pos: POSITION ATOM=all
 RESTRAINT ARG=pos.x AT=0.0 KAPPA=1
@@ -76,7 +76,7 @@ RESTRAINT ARG=pos.x AT=0.0 KAPPA=1
     auto duration =
         std::chrono::duration_cast<std::chrono::microseconds>(end - beg);
     std::ofstream f("benches", std::ios::app);
-    //system_clock is the only clock tha can be mapped to ctime
+    // system_clock is the only clock tha can be mapped to ctime
     const auto now = std::chrono::system_clock::now();
     const std::time_t t_c = std::chrono::system_clock::to_time_t(now);
     f << std::ctime(&t_c);
